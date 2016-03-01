@@ -1,15 +1,15 @@
 package com.example.corinamariebernstein.justjava;
 
 import android.os.Bundle;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.TextView;
-
-import java.text.NumberFormat;
 
 /**
  * This app displays an order form to order coffee.
+ *
+ * @param quantity is a global var that will hold the quanitity of coffees ordered.
  */
 public class MainActivity extends AppCompatActivity {
 
@@ -23,9 +23,14 @@ public class MainActivity extends AppCompatActivity {
 
     /**
      * This method is called when the order button is clicked.
+     * @param hasWhip is grabbing UI status of whipped cream CheckBox
+     * @param priceMessage is the variable that will contain the final message to be displayed after order button is clicked
      */
     public void submitOrder(View view) {
-        String priceMessage = "Total: $" + (quantity * 5);
+
+        CheckBox hasWhip = (CheckBox) findViewById(R.id.whipped_cream);
+
+        String priceMessage = createOrderSummary(calculatePrice(), hasWhip.isChecked());
         displayMessage(priceMessage);
     }
 
@@ -59,18 +64,36 @@ public class MainActivity extends AppCompatActivity {
     }
 
     /**
-     * This method displays the given price on the screen.
+     * This method displays the Order Summary on the screen.
      */
-    private void displayPrice(int number) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(NumberFormat.getCurrencyInstance().format(number));
+    private int calculatePrice() {
+        return quantity * 5;
+    }
+
+    /**
+     * This method displays the Order Summary on the screen.
+     *
+     * @param priceMessage is the var used to build the post-order message in this method.
+     */
+    private String createOrderSummary(int price, boolean hasWhipCream) {
+        String priceMessage = "Customer name: Corina Marie";
+        priceMessage += "\nQuieres crema? ";
+        if(hasWhipCream == true){
+            priceMessage += "si, por favor";
+        } else {
+            priceMessage += "gracias, pero no lo necessito";
+        }
+        priceMessage += "\nQuantity: " + quantity;
+        priceMessage += "\nTotal: $" + price;
+        priceMessage += "\nGracias!";
+        return priceMessage;
     }
 
     /**
      * This method displays the given text on the screen.
      */
     private void displayMessage(String message) {
-        TextView priceTextView = (TextView) findViewById(R.id.price_text_view);
-        priceTextView.setText(message);
+        TextView orderSummaryTextView = (TextView) findViewById(R.id.order_summary_text_view);
+        orderSummaryTextView.setText(message);
     }
 }
