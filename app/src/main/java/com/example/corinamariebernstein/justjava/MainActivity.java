@@ -24,13 +24,17 @@ public class MainActivity extends AppCompatActivity {
     /**
      * This method is called when the order button is clicked.
      * @param hasWhip is grabbing UI status of whipped cream CheckBox
+     * @param hasHazelnuts is grabbing UI status of crushed hazelnuts CheckBox
+     * @param hasCaramel is grabbing UI status of caramel CheckBox
      * @param priceMessage is the variable that will contain the final message to be displayed after order button is clicked
      */
     public void submitOrder(View view) {
 
         CheckBox hasWhip = (CheckBox) findViewById(R.id.whipped_cream);
+        CheckBox hasHazelnuts = (CheckBox) findViewById(R.id.crushed_hazelnuts);
+        CheckBox hasCaramel = (CheckBox) findViewById(R.id.caramel);
 
-        String priceMessage = createOrderSummary(calculatePrice(), hasWhip.isChecked());
+        String priceMessage = createOrderSummary(calculatePrice(), hasWhip.isChecked(), hasHazelnuts.isChecked(), hasCaramel.isChecked());
         displayMessage(priceMessage);
     }
 
@@ -75,13 +79,20 @@ public class MainActivity extends AppCompatActivity {
      *
      * @param priceMessage is the var used to build the post-order message in this method.
      */
-    private String createOrderSummary(int price, boolean hasWhipCream) {
+    private String createOrderSummary(int price,
+                                      boolean hasWhipCream,
+                                      boolean hasHazelnuts,
+                                      boolean hasCaramel) {
         String priceMessage = "Customer name: Corina Marie";
-        priceMessage += "\nQuieres crema? ";
+        priceMessage += "\ntoppings: ";
         if(hasWhipCream == true){
-            priceMessage += "si, por favor";
-        } else {
-            priceMessage += "gracias, pero no lo necessito";
+            priceMessage += "\n~~~~crema";
+        }
+        if(hasHazelnuts == true){
+            priceMessage += "\n~~~~crushed hazelnuts";
+        }
+        if(hasCaramel == true) {
+            priceMessage += "\n~~~~caramel";
         }
         priceMessage += "\nQuantity: " + quantity;
         priceMessage += "\nTotal: $" + price;
